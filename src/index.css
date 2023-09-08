@@ -2,3 +2,6 @@ body {
     background-color:rgb(218, 218, 218);
 }
 
+input {
+    margin-left: 10px;
+}
