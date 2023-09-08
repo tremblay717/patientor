@@ -4,11 +4,40 @@ export interface Diagnosis {
   latin?: string;
 }
 
+export interface DiagnosisCode {
+  code: string;
+}
+
 export enum Gender {
   Male = "male",
   Female = "female",
   Other = "other"
 }
+
+interface Discharge  {
+  date:string,
+  criteria:string
+}
+
+interface SickLeave {
+  startDate: string,
+  endDate: string,
+}
+
+//eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface Entry {
+  id: string,
+  date: string,
+  specialist: string,
+  type: string,
+  description: string,
+  employerName?:string,
+  diagnosisCodes?:string[],
+  healthCheckRating?: number,
+  discharge?:Discharge,
+  sickLeave?: SickLeave
+}
+
 
 export interface Patient {
   id: string;
@@ -17,7 +46,7 @@ export interface Patient {
   gender: Gender;
   ssn?: string;
   dateOfBirth?: string;
-  entries?:[]
+  entries?:Entry[]
 }
 
 export type PatientFormValues = Omit<Patient, "id" | "entries">;

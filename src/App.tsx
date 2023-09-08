@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { BrowserRouter as Router, Route, Link, Routes,  useParams,
+import "./index.css"
+import {
+  BrowserRouter as Router, Route, Link, Routes, useParams,
 } from "react-router-dom";
 import { Button, Divider, Container, Typography } from '@mui/material';
-
 import { apiBaseUrl } from "./constants";
 import { Patient } from "./types";
-
 import patientService from "./services/patients";
 import PatientListPage from "./components/PatientListPage";
 import ShowPatient from "./components/PatientDossier/showPatient";
@@ -24,7 +24,6 @@ const App = () => {
     void fetchPatientList();
   }, []);
 
-  
   return (
     <div className="App">
       <Router>
@@ -38,7 +37,7 @@ const App = () => {
           <Divider hidden />
           <Routes>
             <Route path="/*" element={<PatientListPage patients={patients} setPatients={setPatients} />} />
-            <Route path="/patients/:id" element={<ShowPatient patients={patients} />} />
+            <Route path="/patients/:id" element={<ShowPatient />} />
 
           </Routes>
         </Container>

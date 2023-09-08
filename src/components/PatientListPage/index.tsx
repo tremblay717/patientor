@@ -61,7 +61,7 @@ const PatientListPage = ({ patients, setPatients }: Props) => {
       </Box>
       <Table style={{ marginBottom: "1em" }}>
         <TableHead>
-          <TableRow>
+          <TableRow style={{color:'white'}}>
             <TableCell>Name</TableCell>
             <TableCell>Gender</TableCell>
             <TableCell>Occupation</TableCell>
@@ -76,9 +76,6 @@ const PatientListPage = ({ patients, setPatients }: Props) => {
                 <Link to={`/patients/${patient.id}`}>
                   {patient.name}
                 </Link>
-
-
-
               </TableCell>
               <TableCell>{patient.gender}</TableCell>
               <TableCell>{patient.occupation}</TableCell>
