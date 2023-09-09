@@ -4,27 +4,27 @@ import patientServices from '../../services/patients';
 import diagnosesServices from '../../services/diagnoses';
 import AddEntries from "../AddEntries/AddEntries";
 import { useEffect, useState } from "react";
-import {  Button } from '@mui/material';
+import { Button } from '@mui/material';
 
 const ShowPatient = () => {
     const [patient, setPatient] = useState<Patient | null>(null);
     const [codes, setCodes] = useState<Diagnosis[] | null>(null);
-    const [showEntry, setShowEntry] = useState(false)
-    const id: string = useParams().id!;
+    const [showEntry, setShowEntry] = useState(false);
+    const { id } = useParams();
 
     useEffect(() => {
-        patientServices.getPatient(id).then(response => {
+
+        patientServices.getPatient(id!).then(response => 
             setPatient(response)
-        })
-        diagnosesServices.getDiagnoses().then(response => {
+        )
+        diagnosesServices.getDiagnoses().then(response => 
             setCodes(response)
-        })
-    }, [])
+        )
+    }, [id]);
 
     if (!patient) {
         return <div style={{ marginTop: '30px' }}>Patient not found!</div>
-    }
-
+    };
 
     return (
         <div style={{ marginTop: '30px', fontFamily: "Roboto,Helvetica,Arial,sans-serif" }}>
@@ -35,7 +35,7 @@ const ShowPatient = () => {
             <h5>Occupation: {patient.occupation}</h5>
             <br></br>
             {showEntry &&
-                <AddEntries  patient={patient!} diagCodes={codes!} showEntry={showEntry} setShowEntry={setShowEntry}/>
+                <AddEntries patient={patient!} diagCodes={codes!} showEntry={showEntry} setShowEntry={setShowEntry} entries={patient.entries!} />
             }
             <Button variant="contained" onClick={() => setShowEntry(true)}>
                 Add New Entry
@@ -71,12 +71,15 @@ const ShowPatient = () => {
                                 }
                                 <h5>Specialist: {entry.specialist}</h5>
                                 <h5>Description : {entry.description}</h5>
+                                {entry.employerName &&
+                                    <h5>Employer: {entry.employerName}</h5>
+                                }
                             </div>)
                     })
                 }
             </div>
         </div>
-    )
-}
+    );
+};
 
 export default ShowPatient;

@@ -3,11 +3,11 @@ import { Diagnosis } from "../types";
 import { apiBaseUrl } from "../constants";
 
 const getDiagnoses = async () => {
-   
-    const allCodes = await axios.get<Diagnosis[]>(`${apiBaseUrl}/diagnoses`);
-    return allCodes.data
+    const { data } = await axios.get<Diagnosis[]>(`${apiBaseUrl}/diagnoses`);
+    return data;
 }
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default {
     getDiagnoses
 }

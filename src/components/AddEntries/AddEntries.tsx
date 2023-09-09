@@ -1,31 +1,68 @@
 import { Button } from '@mui/material';
 import { Dispatch, SetStateAction } from 'react';
-import { Patient, Diagnosis, Discharge } from '../../types';
+import { Patient, Diagnosis, Discharge, NewEntry, Entry, SickLeave } from '../../types';
 import { useState } from 'react';
-
+import patientsServices from '../../services/patients';
 interface Props {
     patient: Patient,
     showEntry: boolean,
-    setShowEntry?: Dispatch<SetStateAction<boolean>>
-    diagCodes: Diagnosis[]
+    setShowEntry: Dispatch<SetStateAction<boolean>>,
+    diagCodes: Diagnosis[],
+    entries: Entry[]
 }
 
 const AddEntries = (props: Props) => {
-    const healthArray: number[] = [1, 2, 3, 4];
-    const [date, setDate] = useState<string | null>(null);
-    const [type, setType] = useState<any | null>(null);
+    const healthArray: any = ["", 1, 2, 3, 4];
+    const [notification, setNotification] = useState(false)
+    const [date, setDate] = useState<string>("");
+    const [type, setType] = useState<string>("null");
     const [codes, setCodes] = useState<string[]>([]);
-    const [specialist, setSpecialist] = useState<string | null>(null);
-    const [description, setDescription] = useState<string | null>(null);
-    const [employer, setEmployer] = useState<string | null>(null);
-    const [discharge, setDischarge] = useState<Discharge | null>(null);
-    const [dischargeDate, setDischargeDate] = useState<string | null>(null);
-    const [dischargeCriteria, setDischargeCriteria] = useState<string | null>(null);
-    const [sickleaveStart, setSickLeaveStartDate] = useState<string | null>(null);
-    const [sickleaveEnd, setSickLeaveEndDate] = useState<string | null>(null);
+    const [specialist, setSpecialist] = useState<string>("");
+    const [description, setDescription] = useState<string>("");
+    const [employer, setEmployer] = useState<string | null>("");
+    const [dischargeDate, setDischargeDate] = useState<string>("");
+    const [dischargeCriteria, setDischargeCriteria] = useState<string>("");
+    const [sickleaveStart, setSickLeaveStartDate] = useState<string | null>("");
+    const [sickleaveEnd, setSickLeaveEndDate] = useState<string | null>("");
 
     const submit = () => {
-        console.log(props.patient.id, date, type, specialist, employer, description, codes)
+        const healthID: number | string = Number((document.getElementById('health') as HTMLSelectElement).value);
+        const dischargeObj: Discharge = {
+            date: dischargeDate!,
+            criteria: dischargeCriteria!
+        };
+        const sickLeaveObj: SickLeave = {
+            startDate: sickleaveStart!,
+            endDate: sickleaveEnd!
+        };
+
+        if (date === "" || specialist === "" || type === "" || description === "") {
+            setNotification(true)
+            setTimeout(() => {
+                setNotification(false)
+            }, 10000)
+
+        } else {
+
+            const newEntry: NewEntry = {
+                date: date,
+                type: type,
+                specialist: specialist,
+                employerName: employer!,
+                description: description,
+                healthCheckRating: healthID,
+                diagnosisCodes: codes,
+                discharge: dischargeObj!,
+                sickLeave: sickLeaveObj!
+            };
+            patientsServices.addEntry(props.patient.id, newEntry)
+                .then(response => {
+                    console.log(response)
+                    props.setShowEntry(false)
+                    props.entries.push(response)
+                }
+                )
+        }
     }
 
     const addCode = () => {
@@ -38,15 +75,18 @@ const AddEntries = (props: Props) => {
 
     return (
         <div style={{ position: 'absolute', top: '15%', left: '40%', backgroundColor: 'white', border: 'solid black 1px', borderRadius: '6px', padding: '2%', height: 'auto', width: 'auto' }}>
+            {notification &&
+                <span style={{color:'red', marginTop:'20px', marginBottom:'50px'}}>Ensure all fields are completed</span>
+            }
             <form style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
                 <label >Patient ID:
                     <input id='id' value={props.patient.id} style={{ width: '50%' }} name='id' disabled type="text" />
                 </label>
-                <label >Date:
-                    <input id='date' style={{ width: 'auto' }} onChange={({ target }) => setDate(target.value)} name='date' type="date" />
+                <label >Date *:
+                    <input id='date' style={{ width: 'auto' }} required onChange={({ target }) => setDate(target.value)} name='date' type="date" />
                 </label>
-                <label >Type:
-                    <input id='type' style={{ width: '30%' }} name='type' type="text" onChange={({ target }) => setType(target.value)} />
+                <label >Type *:
+                    <input id='type' style={{ width: '30%' }} name='type' required type="text" onChange={({ target }) => setType(target.value)} />
                 </label>
                 <label >Specialist:
                     <input id='specialist' style={{ width: '30%' }} name='specialist' type="text" onChange={({ target }) => setSpecialist(target.value)} />
@@ -76,7 +116,7 @@ const AddEntries = (props: Props) => {
                     <input id='employer' style={{ width: '30%' }} name='employer' type="text" onChange={({ target }) => setEmployer(target.value)} />
                 </label>
                 <label>Health Rating:
-                    <select id='health' style={{ width: '50px', textAlign: 'center' }}>{
+                    <select id='health' defaultValue={""} style={{ width: '50px', textAlign: 'center' }}>{
                         healthArray.map((num: number) => {
                             return (
                                 <option key={num} value={num}>{num}</option>
