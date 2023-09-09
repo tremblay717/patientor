@@ -4,7 +4,7 @@ import patientServices from '../../services/patients';
 import diagnosesServices from '../../services/diagnoses';
 import AddEntries from "../AddEntries/AddEntries";
 import { useEffect, useState } from "react";
-import {  TextField, InputLabel, MenuItem, Select, Grid, Button, SelectChangeEvent } from '@mui/material';
+import {  Button } from '@mui/material';
 
 const ShowPatient = () => {
     const [patient, setPatient] = useState<Patient | null>(null);
@@ -66,7 +66,7 @@ const ShowPatient = () => {
 
                                 }
 
-                                {entry.healthCheckRating != undefined &&
+                                {entry.healthCheckRating !== undefined &&
                                     <h5>Health Check Rating: {entry.healthCheckRating}</h5>
                                 }
                                 <h5>Specialist: {entry.specialist}</h5>

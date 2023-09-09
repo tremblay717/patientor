@@ -14,12 +14,12 @@ export enum Gender {
   Other = "other"
 }
 
-interface Discharge  {
+export interface Discharge  {
   date:string,
   criteria:string
 }
 
-interface SickLeave {
+export interface SickLeave {
   startDate: string,
   endDate: string,
 }
@@ -50,3 +50,4 @@ export interface Patient {
 }
 
 export type PatientFormValues = Omit<Patient, "id" | "entries">;
+

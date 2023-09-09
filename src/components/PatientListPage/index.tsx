@@ -1,9 +1,7 @@
 import { useState } from "react";
 import { Box, Table, Button, TableHead, Typography, TableCell, TableRow, TableBody } from '@mui/material';
-import ShowPatient from "../PatientDossier/showPatient";
 import {
-  BrowserRouter as Router,
-  Routes, Route, Link
+  Link
 } from 'react-router-dom'
 import axios from 'axios';
 
@@ -61,7 +59,7 @@ const PatientListPage = ({ patients, setPatients }: Props) => {
       </Box>
       <Table style={{ marginBottom: "1em" }}>
         <TableHead>
-          <TableRow style={{color:'white'}}>
+          <TableRow style={{ color: 'white' }}>
             <TableCell>Name</TableCell>
             <TableCell>Gender</TableCell>
             <TableCell>Occupation</TableCell>

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import "./index.css"
 import {
-  BrowserRouter as Router, Route, Link, Routes, useParams,
+  BrowserRouter as Router, Route, Link, Routes
 } from "react-router-dom";
 import { Button, Divider, Container, Typography } from '@mui/material';
 import { apiBaseUrl } from "./constants";
@@ -13,7 +13,7 @@ import ShowPatient from "./components/PatientDossier/showPatient";
 
 const App = () => {
   const [patients, setPatients] = useState<Patient[]>([]);
-  // test for commit
+
   useEffect(() => {
     void axios.get<void>(`${apiBaseUrl}/ping`);
 
